@@ -58,11 +58,13 @@ func main() {
 		return elfs[i].TotalCalories() > elfs[j].TotalCalories()
 	})
 
-	res := util.Sum(
+	part1 := elfs[0].TotalCalories()
+
+	part2 := util.Sum(
 		util.Map(util.First(3, elfs), func(i *Elf) int {
 			return i.TotalCalories()
 		}),
 	)
 
-	fmt.Println(res)
+	fmt.Printf("Part 1: %d\nPart 2: %d\n", part1, part2)
 }
