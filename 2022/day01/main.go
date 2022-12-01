@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"github.com/TomWright/adventofcode/2022/util"
 	"os"
 	"sort"
 	"strconv"
@@ -17,11 +18,11 @@ type Elf struct {
 }
 
 func (e *Elf) TotalCalories() int {
-	sum := 0
-	for _, i := range e.Items {
-		sum += i.Calories
-	}
-	return sum
+	return util.Sum(
+		util.Map(e.Items, func(i Item) int {
+			return i.Calories
+		}),
+	)
 }
 
 const input = "input.txt"
@@ -57,10 +58,11 @@ func main() {
 		return elfs[i].TotalCalories() > elfs[j].TotalCalories()
 	})
 
-	sum := 0
-	for x := 0; x < 3; x++ {
-		sum += elfs[x].TotalCalories()
-	}
+	res := util.Sum(
+		util.Map(util.First(3, elfs), func(i *Elf) int {
+			return i.TotalCalories()
+		}),
+	)
 
-	fmt.Println(sum)
+	fmt.Println(res)
 }
