@@ -13,33 +13,20 @@ type Move struct {
 	Points int
 }
 
-func NewOpponentMove(move string) Move {
+func NewMove(move string) Move {
 	switch move {
-	case "A":
+	case "A", "X":
 		return Rock
-	case "B":
+	case "B", "Y":
 		return Paper
-	case "C":
+	case "C", "Z":
 		return Scissors
 	default:
-		panic("unknown opponent move: " + move)
+		panic("unknown move: " + move)
 	}
 }
 
-func NewResponseMove(move string) Move {
-	switch move {
-	case "X":
-		return Rock
-	case "Y":
-		return Paper
-	case "Z":
-		return Scissors
-	default:
-		panic("unknown response move: " + move)
-	}
-}
-
-func NewResponseResult(expected string) Result {
+func NewResult(expected string) Result {
 	switch expected {
 	case "X":
 		return Lose
@@ -48,7 +35,7 @@ func NewResponseResult(expected string) Result {
 	case "Z":
 		return Win
 	default:
-		panic("unknown response result: " + expected)
+		panic("unknown result: " + expected)
 	}
 }
 
@@ -99,18 +86,18 @@ func (g Game) Points() int {
 	return g.Play().Points + g.Second.Points
 }
 
-func NewGameFromString(moves string) Game {
+func NewGame(moves string) Game {
 	parts := strings.Split(moves, " ")
 	return Game{
-		First:  NewOpponentMove(parts[0]),
-		Second: NewResponseMove(parts[1]),
+		First:  NewMove(parts[0]),
+		Second: NewMove(parts[1]),
 	}
 }
 
-func NewExpectedResultGameFromString(moves string) Game {
+func NewGameWithExpectedResult(moves string) Game {
 	parts := strings.Split(moves, " ")
-	firstMove := NewOpponentMove(parts[0])
-	expectedResult := NewResponseResult(parts[1])
+	firstMove := NewMove(parts[0])
+	expectedResult := NewResult(parts[1])
 
 	for _, response := range []Move{
 		Rock, Paper, Scissors,
@@ -139,8 +126,8 @@ func main() {
 	scanner := bufio.NewScanner(f)
 	for scanner.Scan() {
 		t := scanner.Text()
-		part1Games = append(part1Games, NewGameFromString(t))
-		part2Games = append(part2Games, NewExpectedResultGameFromString(t))
+		part1Games = append(part1Games, NewGame(t))
+		part2Games = append(part2Games, NewGameWithExpectedResult(t))
 	}
 
 	part1 := util.Sum(util.Map(part1Games, func(g Game) int {
