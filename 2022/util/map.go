@@ -32,3 +32,13 @@ func Contains[T comparable](item T, set []T) bool {
 	}
 	return false
 }
+
+func ContainsCount[T comparable](item T, set []T) int {
+	res := 0
+	for _, v := range set {
+		if v == item {
+			res++
+		}
+	}
+	return res
+}
