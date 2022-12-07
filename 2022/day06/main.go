@@ -26,19 +26,23 @@ func main() {
 	fmt.Printf("Part 1: %d\nPart 2: %d\n", part1(input), part2(input))
 }
 
-func findStart(input string, requiredChars int) int {
-	cur := make([]rune, 0)
-outer:
-	for k, v := range input {
-		if len(cur) < requiredChars {
-			cur = append(cur, v)
-			continue
+func isDistinct(in []rune) bool {
+	for _, r := range in {
+		if util.ContainsCount(r, in) > 1 {
+			return false
 		}
+	}
+	return true
+}
+
+func findStart(input string, requiredChars int) int {
+	in := []rune(input)
+	cur := in[0:requiredChars]
+	in = in[requiredChars:]
+	for k, v := range input {
 		cur = append(cur[1:], v)
-		for _, c := range cur {
-			if util.ContainsCount(c, cur) > 1 {
-				continue outer
-			}
+		if !isDistinct(cur) {
+			continue
 		}
 		return k
 	}
