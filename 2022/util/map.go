@@ -24,6 +24,10 @@ func Sum[T int | int32 | int64 | float32 | float64](in []T) T {
 	return res
 }
 
+type Comparable[T any] interface {
+	Equal(other T) bool
+}
+
 func Contains[T comparable](item T, set []T) bool {
 	for _, v := range set {
 		if v == item {
