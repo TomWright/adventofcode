@@ -42,3 +42,21 @@ func ContainsCount[T comparable](item T, set []T) int {
 	}
 	return res
 }
+
+func Filter[T any](set []T, fn func(T) bool) []T {
+	res := make([]T, 0)
+	for _, v := range set {
+		if fn(v) {
+			res = append(res, v)
+		}
+	}
+	return res
+}
+
+func Reverse[T any](set []T) []T {
+	res := make([]T, len(set))
+	for i, j := 0, len(set)-1; i < len(set); i, j = i+1, j-1 {
+		res[i] = set[j]
+	}
+	return res
+}
